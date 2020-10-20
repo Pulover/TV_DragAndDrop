@@ -3,8 +3,34 @@
 ;                    TV_DragAndDrop
 ;
 ; Author:            Pulover [Rodolfo U. Batista]
+; AHK version:       1.1.32.00
 ;
 ;                    Drag & Drop function for TreeView controls
+;=======================================================================================
+;
+; Usage:
+;
+;    Call TV_Drag() from the TreeView's G-Label when A_GuiEvent returns "D" or "d".
+;    A line will show across the listview while holding the button to indicate the
+;        destination where the selected node will be dropped with its children. If you
+;        point the mouse cursor to the half bottom part of the node text it will be
+;        dropped as a child of the pointed node. If you point it to the upper part it
+;        will drop it as sibling right below the pointed node.
+;        
+;    TV_Drag() returns the target node id (if valid) which you can use to call TV_Drop()
+;        and effectively move the selection. Alternatively you can set AutoDrop option
+;        on as a shorthand.
+;
+;    Parameters:
+;        Origin:         The ID of the selected item. Simply pass A_EventInfo.
+;        AutoDrop:       Set to True to automatically drop the items into the selected
+;                            position. This is set off by default to allow you to check
+;                            if the returned destination is a valid node to drop.
+;        ScrollDelay:    Delay in miliseconds for AutoScroll. Default is 100ms.
+;        LineThick:      Thickness of the destination bar in pixels. Default is 2px.
+;        Color:          Color of destination bar. Default is "Black".
+;    Return:             The ID of the destination item. If dropping as a sibling it
+;                            returns a negative version of the ID.
 ;=======================================================================================
 TV_Drag(Origin, AutoDrop := False, LineThick := 2, Color := "Black")
 {
@@ -99,8 +125,9 @@ IsTargetChild(Origin, Target)
 MoveNodes(Node, Target, TreeViewId)
 {
     IsSibling := Target < 0
-    TV_GetText(NodeText, Node)
-    iIcon := GetIconIndex(TreeViewId, Node)
+,   TV_GetText(NodeText, Node)
+,   chk := TV_Get(Node, "C") = Node
+,   iIcon := GetIconIndex(TreeViewId, Node)
     If (IsSibling)
     {
         Target := Target * -1, ParentId := TV_GetParent(Target), SiblingId := ParentId
@@ -112,10 +139,10 @@ MoveNodes(Node, Target, TreeViewId)
         }
         If (!SiblingId)
             SiblingId := Target
-        NodeId := TV_Add(NodeText, ParentId, SiblingId " Expand Vis Icon" iIcon)
+        NodeId := TV_Add(NodeText, ParentId, SiblingId " Expand Vis Icon" iIcon " Check" chk)
     }
     Else
-        NodeId := TV_Add(NodeText, Target, "First Expand Vis Icon" iIcon)
+        NodeId := TV_Add(NodeText, Target, "First Expand Vis Icon" iIcon " Check" chk)
     If (Child := TV_GetChild(Node))
     {
         MoveNodes(Child, NodeId, TreeViewId)

@@ -11,7 +11,7 @@
 ; Usage:
 ;
 ;    Call TV_Drag() from the TreeView's G-Label when A_GuiEvent returns "D" or "d".
-;    A line will show across the listview while holding the button to indicate the
+;    A line will show across the TreeView while holding the button to indicate the
 ;        destination where the selected node will be dropped with its children. If you
 ;        point the mouse cursor to the half bottom part of the node text it will be
 ;        dropped as a child of the pointed node. If you point it to the upper part it
@@ -20,16 +20,6 @@
 ;    TV_Drag() returns the target node id (if valid) which you can use to call TV_Drop()
 ;        and effectively move the selection. Alternatively you can set AutoDrop option
 ;        on as a shorthand.
-;
-;    Parameters:
-;        Origin:         The ID of the selected item. Simply pass A_EventInfo.
-;        AutoDrop:       Set to True to automatically drop the items into the selected
-;                            position. This is set off by default to allow to check if
-;                            the returned destination is a valid node to drop in.
-;        LineThick:      Thickness of the destination bar in pixels. Default is 2px.
-;        Color:          Color of destination bar. Default is "Black".
-;    Return:             The ID of the destination item. If dropping as a sibling it
-;                            returns a negative version of the ID.
 ;=======================================================================================
 TV_Drag(Origin, AutoDrop := False, LineThick := 2, Color := "Black")
 {
@@ -93,12 +83,15 @@ TV_Drag(Origin, AutoDrop := False, LineThick := 2, Color := "Black")
 
     Gui, MarkLine:Cancel
 
+    If (CurrCtrl != TV_TView)
+        return 0
+    
     If (AutoDrop)
         TV_Drop(Origin, HitTarget)
     
     return Line_P = "Child" ? HitTarget : -HitTarget
 }
-
+;=======================================================================================
 TV_Drop(Origin, Target)
 {
     MouseGetPos,,,, TV_TView, 2
@@ -109,7 +102,10 @@ TV_Drop(Origin, Target)
         TV_Delete(Origin)
     }
 }
-
+;=======================================================================================
+;    Internal Functions: These functions are meant for internal use but can also
+;                            be called if necessary.
+;=======================================================================================
 IsTargetChild(Origin, Target)
 {
     ParentID := Target
@@ -120,7 +116,7 @@ IsTargetChild(Origin, Target)
     }
     return False
 }
-
+;=======================================================================================
 MoveNodes(Node, Target, TreeViewId)
 {
     IsSibling := Target < 0
@@ -150,7 +146,7 @@ MoveNodes(Node, Target, TreeViewId)
     }
     return NodeId
 }
-
+;=======================================================================================
 GetIconIndex(Hwnd, Node)
 {
     Static TVIF_IMAGE   := 0x0002
@@ -165,8 +161,9 @@ GetIconIndex(Hwnd, Node)
     SendMessage, TVM_GETITEM, 0, &TVITEM,, ahk_id %Hwnd%
     return NumGet(TVITEM, 3 * 4 + (A_PtrSize * 3), "Int") + 1 ; iImage
 }
-
-; by jNizM
+;=======================================================================================
+;    Author: jNizM
+;=======================================================================================
 HasVal(haystack, needle) {
     for index, value in haystack
         if (value = needle)

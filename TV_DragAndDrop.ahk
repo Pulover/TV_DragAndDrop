@@ -24,9 +24,8 @@
 ;    Parameters:
 ;        Origin:         The ID of the selected item. Simply pass A_EventInfo.
 ;        AutoDrop:       Set to True to automatically drop the items into the selected
-;                            position. This is set off by default to allow you to check
-;                            if the returned destination is a valid node to drop.
-;        ScrollDelay:    Delay in miliseconds for AutoScroll. Default is 100ms.
+;                            position. This is set off by default to allow to check if
+;                            the returned destination is a valid node to drop in.
 ;        LineThick:      Thickness of the destination bar in pixels. Default is 2px.
 ;        Color:          Color of destination bar. Default is "Black".
 ;    Return:             The ID of the destination item. If dropping as a sibling it

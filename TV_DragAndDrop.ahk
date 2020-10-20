@@ -6,7 +6,7 @@
 ;
 ;                    Drag & Drop function for TreeView controls
 ;=======================================================================================
-TV_Drag(Origin, LineThick := 2, Color := "Black")
+TV_Drag(Origin, AutoDrop := False, LineThick := 2, Color := "Black")
 {
     Static TVM_HITTEST     := 0x1111
     Static TVM_SELECTITEM  := 0x110B
@@ -67,14 +67,19 @@ TV_Drag(Origin, LineThick := 2, Color := "Black")
     }
 
     Gui, MarkLine:Cancel
+
+    If (AutoDrop)
+        TV_Drop(Origin, HitTarget)
+    
     return Line_P = "Child" ? HitTarget : -HitTarget
 }
 
-TV_Drop(Origin, Target, TreeViewId := "")
+TV_Drop(Origin, Target)
 {
+    MouseGetPos,,,, TV_TView, 2
     If ((Target) && (Origin != Target))
     {
-        MoveNodes(Origin, Target, TreeViewId)
+        MoveNodes(Origin, Target, TV_TView)
         TV_Modify(Target, "Expand")
         TV_Delete(Origin)
     }
@@ -96,7 +101,6 @@ MoveNodes(Node, Target, TreeViewId)
     IsSibling := Target < 0
     TV_GetText(NodeText, Node)
     iIcon := GetIconIndex(TreeViewId, Node)
-    OutputDebug, % "Icon" iIcon
     If (IsSibling)
     {
         Target := Target * -1, ParentId := TV_GetParent(Target), SiblingId := ParentId

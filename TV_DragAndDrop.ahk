@@ -10,7 +10,7 @@
 ;
 ; Usage:
 ;
-;    Call TV_Drag() from the TreeView's G-Label when A_GuiEvent returns "D" or "d".
+;    Call TV_Drag() from the TreeView's G-Label when A_GuiEvent contains "D".
 ;    A line will show across the TreeView while holding the button to indicate the
 ;        destination where the selected node will be dropped with its children. If you
 ;        point the mouse cursor to the half bottom part of the node text it will be

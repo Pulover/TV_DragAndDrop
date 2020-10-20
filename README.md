@@ -11,7 +11,7 @@ AHK version: 1.1.32.00
 - - -
 
 ## Usage
-Call TV_Drag() from the TreeView's G-Label when A_GuiEvent returns "D" or "d". A line will show across the TreeView while holding the button to indicate the destination where the selected node will be dropped with its children.
+Call TV_Drag() from the TreeView's G-Label when A_GuiEvent contains "D". A line will show across the TreeView while holding the button to indicate the destination where the selected node will be dropped with its children.
 
 If you point the mouse cursor to the half bottom part of the node text it will be dropped as a child of the pointed node. If you point it to the upper part it will drop it as sibling right below the pointed node.
     

@@ -95,7 +95,8 @@ TV_Drag(Origin, AutoDrop := False, LineThick := 2, Color := "Black")
 TV_Drop(Origin, Target)
 {
     MouseGetPos,,,, TV_TView, 2
-    If ((Target) && (Origin != Target))
+    TargetID := Target < 0 ? Target * -1 : Target
+    If ((Target) && (Origin != TargetID))
     {
         NewNodeId := MoveNodes(Origin, Target, TV_TView)
         TV_Modify(Target, "Expand")
@@ -138,7 +139,7 @@ MoveNodes(Node, Target, TreeViewId)
         NodeId := TV_Add(NodeText, ParentId, SiblingId " Expand Vis Icon" iIcon " Check" chk)
     }
     Else
-        NodeId := TV_Add(NodeText, Target, "First Expand Vis Icon" iIcon " Check" chk)
+        NodeId := TV_Add(NodeText, Target, "Expand Vis Icon" iIcon " Check" chk)
     If (Child := TV_GetChild(Node))
     {
         MoveNodes(Child, NodeId, TreeViewId)

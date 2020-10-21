@@ -97,10 +97,11 @@ TV_Drop(Origin, Target)
     MouseGetPos,,,, TV_TView, 2
     If ((Target) && (Origin != Target))
     {
-        MoveNodes(Origin, Target, TV_TView)
+        NewNodeId := MoveNodes(Origin, Target, TV_TView)
         TV_Modify(Target, "Expand")
         TV_Delete(Origin)
     }
+    return NewNodeId
 }
 ;=======================================================================================
 ;    Internal Functions: These functions are meant for internal use but can also

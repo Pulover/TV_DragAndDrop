@@ -5,8 +5,8 @@
 AHK version: 1.1.32.00
 
 ## Public Functions
-* TV_Drag(Origin [, AutoDrop, LineThick, Color])
-* TV_Drop(Origin, Target)
+* TV_Drag(Origin [DragButton, AutoDrop, LineThick, Color])
+* TV_Drop(Origin, Target [, Hwnd, Copy])
 
 - - -
 

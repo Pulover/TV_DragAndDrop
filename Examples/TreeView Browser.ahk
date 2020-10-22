@@ -18,24 +18,46 @@ SetBatchLines, -1
 ; Customize File Extension (optional)
 CustomExt = tvb
 
+Menu, MoveCopyMenu, Add, Move here, MoveNodes
+Menu, MoveCopyMenu, Add, Copy here, CopyNodes
+
 ImageListID := IL_Create(10)
 Gui, +Resize +MinSize260x60
 Gui, Add, Button, Default w70 gLoadFolder, Load Folder
 Gui, Add, Button, w70 yp xp+85 gLoadFile, Load File
 Gui, Add, Button, w70 yp xp+85 gSaveFile, Save File
 Gui, Add, Checkbox, Checked yp+5 xp+85 vLoadIcons gLoadIcons, Load Icons
-Gui, Add, TreeView, xm h400 w300 ImageList%ImageListID% vTreeView gNotifications
+Gui, Add, TreeView, xm h400 w300 ImageList%ImageListID% hwndTreeHwnd vTreeView gNotifications
 Gui, Show,, TreeView Browser
 return
 
 Notifications:
 If (A_Guievent = "D")
 {
-    Target := TV_Drag(A_EventInfo)
+	Origin := A_EventInfo
+    Target := TV_Drag(Origin, A_Guievent)
+
+	If (A_Guievent == "d")
+	{
+		Menu, MoveCopyMenu, Show
+		return
+	}
 	GuiControl, -Redraw, TreeView
-    TV_Drop(A_EventInfo, Target)
+    TV_Drop(Origin, Target)
 	GuiControl, +Redraw, TreeView
 }
+return
+
+MoveNodes:
+GuiControl, -Redraw, TreeView
+TV_Drop(Origin, Target, TreeHwnd)
+GuiControl, +Redraw, TreeView
+return
+
+CopyNodes:
+GuiControl, -Redraw, TreeView
+TV_Drop(Origin, Target, TreeHwnd, True)
+GuiControl, +Redraw, TreeView
 return
 
 LoadFolder:

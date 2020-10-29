@@ -42,6 +42,7 @@ Drops the selected item on to the destination node as a child, if positive, or a
 * **Target** - The ID of the dragged item returned by TV_Drag(). To drop the item as sibling below the target instead of as a child, make the ID a negative number.
 * **Hwnd** - The hwnd of the TreeView (necessary for keeping the icons of moved/copied nodes). If omitted the hwnd of the control under the mouse cursor will be used.
 * **Copy** - If *True*, it will drop a copy of the node but will not delete the original.
+* **FirstChild** - If *True* it will drop the node as the first/top sibling inside the target node.
 
 ### Return
 The ID of the top node added at the destination position.

@@ -36,6 +36,7 @@ If (A_Guievent = "D")
 {
 	Origin := A_EventInfo
     Target := TV_Drag(Origin, A_Guievent)
+	Expanded := TV_Get(Origin, "Expand") = Origin
 
 	If (A_Guievent == "d")
 	{
@@ -43,20 +44,20 @@ If (A_Guievent = "D")
 		return
 	}
 	GuiControl, -Redraw, TreeView
-    TV_Drop(Origin, Target)
+    TV_Drop(Origin, Target,,, Expanded)
 	GuiControl, +Redraw, TreeView
 }
 return
 
 MoveNodes:
 GuiControl, -Redraw, TreeView
-TV_Drop(Origin, Target, TreeHwnd)
+TV_Drop(Origin, Target, TreeHwnd,, Expanded)
 GuiControl, +Redraw, TreeView
 return
 
 CopyNodes:
 GuiControl, -Redraw, TreeView
-TV_Drop(Origin, Target, TreeHwnd, True)
+TV_Drop(Origin, Target, TreeHwnd, True, Expanded)
 GuiControl, +Redraw, TreeView
 return
 
